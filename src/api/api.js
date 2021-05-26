@@ -15,7 +15,7 @@ async function getEvents() {
     let config = {
         headers: {
             "Accept": "application/json; odata=verbose",
-            "Authorization": `Bearer ${await getToken()}`
+            // "Authorization": `Bearer ${await getToken()}`
         }
     }
 

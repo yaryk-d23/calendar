@@ -8,7 +8,7 @@ async function getConfig() {
             // "Authorization": `Bearer ${await getToken()}`
         }
     }
-    return axios.get("https://dvagov.sharepoint.com/sites/VAFMBT/_api/web/lists/getbytitle('CalendarConfig')/items", config).then(res => {
+    return axios.get("https://dvagov.sharepoint.com/sites/VAFMBTCalendars/_api/web/lists/getbytitle('CalendarConfig')/items", config).then(res => {
         return res.data.d.results;
     });
 }
