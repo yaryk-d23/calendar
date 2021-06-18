@@ -4,11 +4,13 @@ import getToken from "./token";
 async function getConfig() {
     let config = {
         headers: {
-            "Accept": "application/json; odata=verbose",
-            // "Authorization": `Bearer ${await getToken()}`
+            "Accept": "application/json; odata=verbose"
         }
     }
-    return axios.get("https://dvagov.sharepoint.com/sites/VAFMBTCalendars/_api/web/lists/getbytitle('CalendarConfig')/items", config).then(res => {
+    if(process.env.NODE_ENV === "development") {
+        config.headers["Authorization"] = `Bearer ${await getToken()}`;
+    }
+    return axios.get(`${"https://dvagov.sharepoint.com/sites/VAFMBTCalendars"}/_api/web/lists/getbytitle('CalendarConfig')/items`, config).then(res => {
         return res.data.d.results;
     });
 }

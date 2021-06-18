@@ -1,3 +1,4 @@
+@import "@fluentui/react/dist/css/fabric.min.css";
 .history-item {
   display: inline-block;
     margin: 0 20px 20px 0;
@@ -9,4 +10,8 @@
     cursor: pointer;
     width: 150px;
     text-align: center;
+}
+.hide {
+  opacity: 0.3;
+  text-decoration: line-through;
 }

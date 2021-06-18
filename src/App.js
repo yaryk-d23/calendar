@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import './App.css';
 import { useAsync } from 'react-async';
 import { Calendar, momentLocalizer } from 'react-big-calendar'
@@ -5,29 +6,25 @@ import moment from 'moment'
 import spEventsParser from "sharepoint-events-parser";
 
 import getEvents from "./api/api"
+import EventDetails from "./components/EventDetails/EventDetails";
+
 const localizer = momentLocalizer(moment)
-
-// const events = [
-//   {
-//     start: '2021-04-02',
-//     end: '2021-04-02',
-//     eventClasses: 'optionalEvent',
-//     title: 'test event',
-//     description: 'This is a test description of an event',
-//   },
-//   {
-//     start: '2021-04-02',
-//     end: '2021-04-25',
-//     title: 'test event',
-//     description: 'This is a test description of an event',
-//     data: 'you can add what ever random data you may want to use later',
-//   },
-// ];
-
-const loadEvents = async () =>  await getEvents();
+const loadEvents = async () => await getEvents();
 
 function App() {
   const { data, error, isLoading } = useAsync({ promiseFn: loadEvents });
+  const [hideCalendars, setHideCalendars] = useState([]);
+  const onClickCalendar = function (id) {
+    if (hideCalendars.indexOf(id) === -1) {
+      setHideCalendars([...hideCalendars, id]);
+    }
+    else {
+      let tmp = hideCalendars;
+      tmp.splice(hideCalendars.indexOf(id), 1)
+      setHideCalendars([...tmp]);
+    }
+  }
+  const [selectedEvent, setSelectedEvent] = useState(null);
   if (isLoading) return "Loading..."
   if (error) return `Something went wrong: ${error.message}`
   if (data) {
@@ -38,17 +35,19 @@ function App() {
       let parsedArray = spEventsParser.parseEvents(data.calendars[i.Id], startDate, endDate);
       parsedArray = parseEvents(parsedArray, i);
       data.calendars[i.Id] = parsedArray;
-  });
+    });
     // const parsedArray = spEventsParser.parseEvents(data.data.d.results);
     let events = [];
-    Object.keys(data.calendars).map(key => {
+    Object.keys(data.calendars).filter(x => {
+      return hideCalendars.indexOf(parseInt(x)) === -1;
+    }).forEach(key => {
       events = [...events, ...data.calendars[key]];
     });
     return (
       <div className="App">
         <div className="calendar-history">
           {data.config.map(i => {
-            return (<div className="history-item" style={{backgroundColor: i.Color}}>
+            return (<div key={i.Id} className={["history-item", hideCalendars.indexOf(i.Id) !== -1 ? "hide" : ""].join(" ")} style={{ backgroundColor: i.Color }} onClick={() => onClickCalendar(i.Id)}>
               {i.Title}
             </div>);
           })}
@@ -61,12 +60,20 @@ function App() {
             endAccessor="end"
             style={{ height: 700 }}
             views={['month', 'week', 'day']}
-            eventPropGetter={(event) => {return {
-              className: event.className,
-              style: {background: event.blockColor}
-            }}}
+            eventPropGetter={(event) => {
+              return {
+                className: event.className,
+                style: { background: event.blockColor }
+              }
+            }}
+            onSelectEvent={(e) => {
+              setSelectedEvent(e);
+            }}
           />
         </div>
+        {!!selectedEvent ? <div>
+          <EventDetails event={ selectedEvent } toggleHideDialog={(val) => setSelectedEvent(val)}/>
+        </div> : null}
       </div>
     );
   }

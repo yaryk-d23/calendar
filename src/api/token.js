@@ -10,7 +10,6 @@ const params = new URLSearchParams()
 function getToken() {
     return axios.post("https://accounts.accesscontrol.windows.net/9f6a57fa-dde1-4400-a1f5-92364f43ed31/tokens/OAuth/2", params, {
         headers: {
-            // "Accept": "application/json; odata=verbose",
             "Content-Type": "application/x-www-form-urlencoded",
         }
     });
