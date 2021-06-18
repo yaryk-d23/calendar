@@ -9,8 +9,8 @@ function EventDetails({ event, toggleHideDialog }) {
     const generateOutlookExport = (e) => {
         let params = [
             "https://outlook.office.com/calendar/0/deeplink/compose?path=%2Fcalendar%2Faction%2Fcompose&rru=addevent",
-            `startdt=${encodeURIComponent(dayjs(e.EventDate).format("YYYY-MM-DDTHH:mm:ssZ"))}`,
-            `enddt=${encodeURIComponent(dayjs(e.EndDate).format("YYYY-MM-DDTHH:mm:ssZ"))}`,
+            `startdt=${encodeURIComponent(dayjs(e.EventDate).format("YYYY-MM-DDTHH:mm:ss+00:00"))}`,
+            `enddt=${encodeURIComponent(dayjs(e.EndDate).format("YYYY-MM-DDTHH:mm:ss+00:00"))}`,
             // `enddt=${encodeURIComponent("2022-01-12T20:00:00+00:00")}`,
             `subject=${encodeURIComponent(e.Title)}`,
             `location=${encodeURIComponent(e.Location)}`,
@@ -80,7 +80,7 @@ function EventDetails({ event, toggleHideDialog }) {
                         <div className="ms-Grid-col ms-sm4">
                             <label>Recurrence:</label>
                         </div>
-                        <div className="ms-Grid-col ms-sm8">{event.RecurrenceData}</div>
+                        <div className="ms-Grid-col ms-sm8">{event.recurrenceValue ? "Yes" : "No"}</div>
                     </div> : null}
                     <div className="ms-Grid-row">
                         <div className="ms-Grid-col ms-sm12">
@@ -89,7 +89,7 @@ function EventDetails({ event, toggleHideDialog }) {
                     </div>
                 </div>
                 <DialogFooter>
-                    <PrimaryButton href={event.LinkToEdit} target="_blank" text="Edit" />
+                    <PrimaryButton onClick={() => window.open(event.LinkToEdit, "_blank")} text="Edit" />
                     <DefaultButton onClick={() => toggleHideDialog(null)} text="Close" />
                 </DialogFooter>
             </Dialog>
