@@ -48,7 +48,7 @@ function App() {
         <div className="calendar-history">
           {data.config.map(i => {
             return (<div key={i.Id} className={["history-item", hideCalendars.indexOf(i.Id) !== -1 ? "hide" : ""].join(" ")} style={{ backgroundColor: i.Color }} onClick={() => onClickCalendar(i.Id)}>
-              {i.Title}
+              {i.DisplayTitle}
             </div>);
           })}
         </div>
