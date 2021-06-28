@@ -25,6 +25,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "homepage": "https://dvagov.sharepoint.com/sites/VAFMBTCalendars/SiteAssets/calendar",
   "eslintConfig": {
     "extends": [
       "react-app",

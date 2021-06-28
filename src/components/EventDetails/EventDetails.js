@@ -25,9 +25,12 @@ function EventDetails({ event, toggleHideDialog }) {
                 hidden={!event}
                 onDismiss={() => toggleHideDialog(null)}
                 dialogContentProps={{
-                    type: DialogType.largeHeader,
+                    type: DialogType.close,
                     title: event.Title,
                     closeButtonAriaLabel: 'Close',
+                    titleProps: {
+                        hidden: true
+                    }
                 }}
                 modalProps={{
                     titleAriaId: 'dialogLabel',
@@ -35,7 +38,16 @@ function EventDetails({ event, toggleHideDialog }) {
                     isBlocking: false,
                 }}
             >
+                <div className="form-header">
+                    <div className="event-title">{event.Title}</div>
+                </div>
                 <div className="ms-Grid" dir="ltr">
+                    {/* <div className="ms-Grid-row">
+                        <div className="ms-Grid-col ms-sm4">
+                            <label>Title:</label>
+                        </div>
+                        <div className="ms-Grid-col ms-sm8">{event.Title}</div>
+                    </div> */}
                     <div className="ms-Grid-row">
                         <div className="ms-Grid-col ms-sm4">
                             <label>Category:</label>
@@ -88,10 +100,11 @@ function EventDetails({ event, toggleHideDialog }) {
                         </div>
                     </div>
                 </div>
-                <DialogFooter>
+                <div className="action-block">
                     <PrimaryButton onClick={() => window.open(event.LinkToEdit, "_blank")} text="Edit" />
                     <DefaultButton onClick={() => toggleHideDialog(null)} text="Close" />
-                </DialogFooter>
+                </div>
+                    <div className="form-footer"></div>
             </Dialog>
         </div>
     );
